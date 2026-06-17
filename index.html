@@ -26,7 +26,17 @@
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  html { scroll-behavior: smooth; }
+  html {
+    scroll-behavior: smooth;
+  }
+
+  html, body, button, input, textarea, select, a {
+    cursor: none;
+  }
+
+  body.cursor-default, body.cursor-default * {
+    cursor: default !important;
+  }
 
   body {
     background: var(--black);
@@ -230,7 +240,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.4rem;
+    gap: 0.75rem;
     opacity: 0;
     animation: fadeUp 0.8s 1.2s forwards;
   }
@@ -240,11 +250,82 @@
     text-transform: uppercase;
     color: var(--text-muted);
   }
-  .scroll-line {
-    width: 1px;
+  .scroll-camera {
+    position: relative;
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(240,237,232,0.25);
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(8px);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+    cursor: grab;
+    animation: floatCamera 4s ease-in-out infinite;
+    touch-action: none;
+  }
+  .scroll-camera:hover {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 20px 45px rgba(0,0,0,0.18);
+    background: rgba(201,168,76,0.12);
+  }
+  .scroll-camera.dragging {
+    cursor: grabbing;
+    transform: scale(0.98);
+    box-shadow: 0 22px 55px rgba(0,0,0,0.25);
+  }
+  .scroll-camera::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(201,168,76,0.45);
+    transition: box-shadow 0.35s ease;
+  }
+  .scroll-camera.dragging::after {
+    box-shadow: 0 0 0 10px rgba(201,168,76,0.18);
+  }
+  .scroll-camera svg {
+    width: 24px;
+    height: 24px;
+    fill: var(--gold);
+    transition: transform 0.25s ease;
+  }
+  @keyframes floatCamera {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-7px); }
+  }
+
+  .cursor-follower {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 40px;
     height: 40px;
-    background: linear-gradient(to bottom, var(--gold), transparent);
-    animation: pulse 2s infinite;
+    pointer-events: none;
+    transform: translate(-50%, -50%) scale(0.95);
+    opacity: 0;
+    transition: transform 0.12s ease, opacity 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    background: rgba(201,168,76,0.1);
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(201,168,76,0.3);
+    backdrop-filter: blur(4px);
+    z-index: 9999;
+    mix-blend-mode: screen;
+  }
+  .cursor-follower::before {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23C9A84C' d='M20 5h-3.17l-1.83-2H8.99L7.17 5H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm-8 12c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm3-5c0 1.66-1.34 3-3 3s-3-1.34-3-3 1.34-3 3-3 3 1.34 3 3z'/%3E%3C/svg%3E") center/contain no-repeat;
+  }
+  .cursor-follower.visible {
+    opacity: 1;
+  }
+  body.cursor-default .cursor-follower {
+    opacity: 0 !important;
   }
 
   /* ── SECTION SHARED ── */
@@ -745,7 +826,11 @@
   </div>
   <div class="hero-scroll">
     <span>Scroll</span>
-    <div class="scroll-line"></div>
+    <div class="scroll-camera" aria-label="Scroll down">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M20 5h-3.17l-1.83-2H8.99L7.17 5H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm-8 12c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm3-5c0 1.66-1.34 3-3 3s-3-1.34-3-3 1.34-3 3-3 3 1.34 3 3z"/>
+      </svg>
+    </div>
   </div>
 </section>
 
@@ -1095,6 +1180,7 @@
     </a>
   </div>
 </footer>
+<div class="cursor-follower"></div>
 
 <script>
   // Nav scroll
@@ -1155,6 +1241,80 @@
       });
     });
   });
+
+  // Scroll camera drag effect
+  const scrollCamera = document.querySelector('.scroll-camera');
+  if (scrollCamera) {
+    let isDragging = false;
+    let dragStartY = 0;
+
+    const resetScrollCamera = () => {
+      scrollCamera.style.transform = '';
+      scrollCamera.classList.remove('dragging');
+    };
+
+    scrollCamera.addEventListener('pointerdown', (event) => {
+      isDragging = true;
+      dragStartY = event.clientY;
+      scrollCamera.setPointerCapture(event.pointerId);
+      scrollCamera.classList.add('dragging');
+    });
+
+    scrollCamera.addEventListener('pointermove', (event) => {
+      if (!isDragging) return;
+      const delta = Math.max(Math.min(event.clientY - dragStartY, 14), -14);
+      scrollCamera.style.transform = `translateY(${delta}px) scale(0.98)`;
+    });
+
+    const endScrollDrag = (event) => {
+      if (!isDragging) return;
+      isDragging = false;
+      if (event.pointerId) scrollCamera.releasePointerCapture(event.pointerId);
+      resetScrollCamera();
+    };
+
+    scrollCamera.addEventListener('pointerup', endScrollDrag);
+    scrollCamera.addEventListener('pointercancel', endScrollDrag);
+    scrollCamera.addEventListener('pointerleave', endScrollDrag);
+  }
+
+  // Custom camera cursor glow follower
+  const cursorFollower = document.querySelector('.cursor-follower');
+  const pageBody = document.body;
+  let hideTimer = null;
+
+  if (cursorFollower) {
+    const moveFollower = (event) => {
+      if (pageBody.classList.contains('cursor-default')) return;
+      const x = event.clientX;
+      const y = event.clientY;
+      cursorFollower.style.left = `${x}px`;
+      cursorFollower.style.top = `${y}px`;
+      cursorFollower.classList.add('visible');
+      cursorFollower.style.transform = 'translate(-50%, -50%) scale(1)';
+      cursorFollower.style.boxShadow = '0 0 18px 8px rgba(201,168,76,0.18)';
+      clearTimeout(hideTimer);
+      hideTimer = setTimeout(() => {
+        cursorFollower.style.boxShadow = '0 0 0 0 rgba(201,168,76,0.3)';
+        cursorFollower.classList.remove('visible');
+      }, 900);
+    };
+
+    document.addEventListener('pointermove', moveFollower);
+
+    document.addEventListener('pointerdown', () => {
+      pageBody.classList.add('cursor-default');
+      cursorFollower.classList.remove('visible');
+    });
+
+    document.addEventListener('pointerup', () => {
+      pageBody.classList.remove('cursor-default');
+    });
+
+    document.addEventListener('pointerleave', () => {
+      cursorFollower.classList.remove('visible');
+    });
+  }
 
   // Booking form → mailto
   document.getElementById('bookingForm').addEventListener('submit', function(e) {
