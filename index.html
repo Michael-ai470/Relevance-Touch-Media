@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
-<style>
+<!-- <style>
   :root {
     --gold: #C9A84C;
     --gold-light: #E8C96A;
@@ -786,7 +786,7 @@
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }
   }
-</style>
+</style> -->
 </head>
 <body>
 
@@ -809,8 +809,128 @@
   </button>
 </nav>
 
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#0B0B0B;
+    color:#F5F5F5;
+    font-family:Arial, Helvetica, sans-serif;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:20px;
+}
+
+.container{
+    max-width:700px;
+}
+
+.logo{
+    color:#D4AF37;
+    font-size:14px;
+    letter-spacing:6px;
+    margin-bottom:30px;
+    font-weight:700;
+}
+
+h1{
+    font-size:3rem;
+    line-height:1.2;
+    margin-bottom:20px;
+    color:#F5F5F5;
+}
+
+p{
+    color:#CFCFCF;
+    line-height:1.8;
+    font-size:1.1rem;
+}
+
+.status{
+    display:inline-flex;
+    align-items:center;
+    gap:12px;
+    margin-top:35px;
+    padding:14px 28px;
+    border:1px solid #D4AF37;
+    border-radius:50px;
+    color:#D4AF37;
+    font-weight:600;
+}
+
+.status span{
+    width:10px;
+    height:10px;
+    background:#D4AF37;
+    border-radius:50%;
+    animation:pulse 1.5s infinite;
+}
+
+.footer{
+    margin-top:30px;
+    color:#999;
+}
+
+@keyframes pulse{
+    0%{
+        transform:scale(1);
+        opacity:1;
+    }
+    50%{
+        transform:scale(1.5);
+        opacity:.5;
+    }
+    100%{
+        transform:scale(1);
+        opacity:1;
+    }
+}
+
+@media(max-width:768px){
+    h1{
+        font-size:2rem;
+    }
+
+    p{
+        font-size:1rem;
+    }
+}
+</style>
+
+<section class="maintenance">
+    <div class="container">
+
+        <div class="logo">RELEVANCE TOUCH</div>
+
+        <h1>We're Currently Under Maintenance</h1>
+
+        <p>
+            We're making improvements behind the scenes to serve you better.
+            Our website will be back online shortly.
+        </p>
+
+        <div class="status">
+            <span></span>
+            Maintenance in Progress
+        </div>
+
+        <p class="footer">
+            Thank you for your patience.
+        </p>
+
+    </div>
+</section>
+
+
 <!-- HERO -->
-<section id="home">
+<!-- <section id="home">
   <video class="hero-video" autoplay muted loop playsinline>
     <source src="images/Hero Video.mp4" type="video/mp4" />
   </video>
@@ -832,10 +952,10 @@
       </svg>
     </div>
   </div>
-</section>
+</section> -->
 
 <!-- ABOUT -->
-<section id="about">
+<!-- <section id="about">
   <div class="about-text reveal">
     <p class="section-eyebrow">Who We Are</p>
     <h2 class="section-title">A Creative Hub Built on<br /><em>Precision & Passion</em></h2>
@@ -867,10 +987,10 @@
       <img src="images/img (3).jpg" alt="Relevance Touch fire performance" loading="lazy" />
     </div>
   </div>
-</section>
+</section> -->
 
 <!-- SERVICES -->
-<section id="services">
+<!-- <section id="services">
   <div class="services-header reveal">
     <div>
       <p class="section-eyebrow">What We Do</p>
@@ -938,10 +1058,10 @@
       <p class="service-desc">Professional audio mixing, mastering, and sound design for music, voiceovers, and commercial content.</p>
     </div>
   </div>
-</section>
+</section> -->
 
 <!-- PORTFOLIO -->
-<section id="portfolio">
+<!-- <section id="portfolio">
   <div class="reveal">
     <p class="section-eyebrow">Our Work</p>
     <h2 class="section-title">Portfolio &<br /><em>Showcase</em></h2>
@@ -990,10 +1110,10 @@
       </div>
     </div>
   </div>
-</section>
+</section> -->
 
 <!-- AUDIO -->
-<section id="audio">
+<!-- <section id="audio">
   <div class="audio-inner">
     <div class="reveal">
       <p class="section-eyebrow">Audio Tuning</p>
@@ -1038,10 +1158,10 @@
       </div>
     </div>
   </div>
-</section>
+</section> -->
 
 <!-- ARTISTS -->
-<section id="artists">
+<!-- <section id="artists">
   <div class="reveal" style="max-width:600px;">
     <p class="section-eyebrow">Management Roster</p>
     <h2 class="section-title">The Talent We<br /><em>Represent</em></h2>
@@ -1070,10 +1190,10 @@
       <p class="artist-role">Artist</p>
     </div>
   </div>
-</section>
+</section> -->
 
 <!-- BOOKING -->
-<section id="booking">
+<!-- <section id="booking">
   <div class="booking-inner">
     <div class="reveal">
       <p class="section-eyebrow">Get In Touch</p>
@@ -1165,10 +1285,10 @@
       </form>
     </div>
   </div>
-</section>
+</section> -->
 
 <!-- FOOTER -->
-<footer>
+<!-- <footer>
   <div class="footer-logo">Relevance Touch</div>
   <p class="footer-copy">&copy; 2026 Relevance Touch Media. All rights reserved. Lagos, Nigeria.</p>
   <div class="social-links" style="margin:0;">
@@ -1179,7 +1299,7 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
     </a>
   </div>
-</footer>
+</footer> -->
 <div class="cursor-follower"></div>
 
 <script>
